@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<link rel="shortcut icon" href="favicon.webp" type="image/x-icon">
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Happy Diwali Spin & Win Celebration</title>
+
+<!-- external libs -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@3.6.1/tsparticles.bundle.min.js"></script>
+
+<style>
+/* =========================================================================
+   Diwali Spin & Win — Stylesheet (Responsive, Accessible)
+   This stylesheet preserves the original theme and functionality while
+   adding robust mobile-first responsiveness and fixes for horizontal
+   overflow. It has been intentionally expanded with comments and small
+   helper rules to reach the requested verbose size while remaining clean.
+   ========================================================================= */
+
+/* -------------------------
+   Root variables and resets
+   ------------------------- */
+:root{
+  --bg-1: #070816;
+  --bg-2: #0b1020;
+  --card: rgba(255,255,255,0.03);
+  --accent: #ffb703;
+  --accent-2: #ff6b6b;
+  --text: #ffffff;
+  --muted: #cbd5e1;
+  --success: #25D366;
+  --glass: rgba(255,255,255,0.02);
+  --glass-2: rgba(255,255,255,0.04);
+  --nav-height: 72px;
+  --max-content-width: 1200px;
+  --transition-fast: 180ms;
+  --transition-med: 350ms;
+  --transition-slow: 700ms;
+  --confetti-duration: 8000; /* 8s in milliseconds */
+  --safe-padding: 14px; /* used for small screens to avoid touching edges */
+}
+
+/* Basic reset */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html,body { height:100%; }
+body {
+  margin:0;
+  min-height:100vh;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(255,180,59,0.06) 0%, transparent 6%),
+    radial-gradient(circle at 92% 92%, rgba(255,107,107,0.03) 0%, transparent 10%),
+    linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 60%);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden; /* prevent horizontal scrolling */
+  overflow-y:auto; /* page is scrollable per request */
+  -webkit-overflow-scrolling: touch;
+  padding: 10px 0; /* breathing room for mobile safe areas */
+}
+
+/* Ensure images do not create overflow */
+img, svg { max-width:100%; height:auto; display:block; }
+
+/* Page container: center and limit width */
+.container {
+  width:100%;
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  padding: calc(var(--safe-padding)) 16px;
+}
+
+/* NAV BAR - decorative and accessible */
+.navbar {
+  position: sticky;
+  top: 8px;
+  z-index: 1200;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:12px 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+  border-radius:12px;
+  border:1px solid rgba(255,255,255,0.02);
+  box-shadow: 0 6px 24px rgba(2,6,23,0.5);
+  backdrop-filter: blur(4px);
+}
+#ad-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  overflow: hidden;
+}
+
+#ad-banner iframe {
+  max-width: 100%;
+  height: auto;
+  border: none;
+}
+
+
+/* brand area */
+.brand {
+  display:flex;
+  gap:12px;
+  align-items:center;
+  min-width: 0; /* allow text truncation */
+}
+.brand .logo {
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  background: linear-gradient(135deg, #ffb703, #ff6b6b);
+  color:#081120;
+  box-shadow: 0 6px 18px rgba(255,107,107,0.12);
+  flex: 0 0 48px;
+}
+.brand h1 {
+  margin:0;
+  font-size:20px;
+  letter-spacing:0.2px;
+  line-height:1;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.brand p { margin:0; font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+/* nav links */
+.navlinks {
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+.navlinks a {
+  color:var(--muted);
+  text-decoration:none;
+  padding:8px 12px;
+  border-radius:8px;
+  font-size:14px;
+  transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+  white-space:nowrap;
+}
+.navlinks a:hover, .navlinks a:focus {
+  color:var(--bg-1);
+  background: linear-gradient(90deg,var(--accent),var(--accent-2));
+  transform: translateY(-2px);
+  outline:none;
+}
+
+/* hero section - congratulatory header */
+.hero {
+  margin:14px 0 18px 0;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:18px;
+  border-radius:14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+  border:1px solid rgba(255,255,255,0.02);
+  box-shadow: 0 12px 32px rgba(3,6,15,0.45);
+  flex-wrap:wrap;
+}
+.hero .left {
+  flex:1 1 320px;
+  min-width: 220px;
+}
+.hero .title {
+  font-size:28px;
+  margin:0 0 6px 0;
+  color:var(--accent);
+  text-shadow: 0 6px 24px rgba(255,183,3,0.08);
+}
+.hero .subtitle {
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* board layout (wheel + panel) - responsive grid */
+.board {
+  margin-top:18px;
+  display:grid;
+  grid-template-columns: 1fr 360px;
+  gap:20px;
+  align-items:start;
+  width:100%;
+}
+@media (max-width:1100px){
+  .board { grid-template-columns: 1fr 320px; }
+}
+@media (max-width:860px){
+  .board { grid-template-columns: 1fr; }
+}
+
+/* wheel area */
+.wheel-area {
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+  border-radius:14px;
+  padding:20px;
+  min-height:420px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  border:1px solid rgba(255,255,255,0.03);
+  overflow:hidden;
+}
+
+/* pointer at top (fixed) - arrow points downward */
+/* pointer positioned relative to the wheel-wrap (placed INSIDE .wheel-wrap) */
+.wheel-wrap { position: relative; } /* ensure wheel-wrap is the positioning context */
+
+.pointer {
+  position: absolute;
+  top: -18px;                      /* lifts the pointer slightly above the wheel rim */
+  left: 50%;
+  transform: translateX(-50%);     /* center horizontally */
+  width: 0;
+  height: 0;
+  pointer-events: none;            /* pointer shouldn't intercept clicks/touches */
+  z-index: 60;                     /* must be above the rotating wheel */
+  border-left: 18px solid transparent;
+  border-right: 18px solid transparent;
+  border-bottom: 32px solid var(--accent);
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,0.6));
+  will-change: transform, opacity;
+  /* slight accessibility improvement */
+  outline: none;
+}
+
+/* smaller pointer for very narrow screens */
+@media (max-width:420px) {
+  .pointer {
+    border-left-width: 14px;
+    border-right-width: 14px;
+    border-bottom-width: 26px;
+    top: -14px;
+  }
+}
+
+
+/* wheel wrapper and image */
+.wheel-wrap {
+  width:88%;
+  max-width:520px;
+  aspect-ratio:1;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  touch-action: none; /* prevent accidental scrolling while spinning on mobile */
+}
+.wheel {
+  width:100%;
+  height:100%;
+  border-radius:50%;
+  will-change: transform;
+  transition: transform 5.5s cubic-bezier(.08,.8,.2,1);
+  object-fit:cover;
+  display:block;
+  user-select:none;
+  -webkit-user-drag:none;
+  border:8px solid rgba(255,255,255,0.02);
+  box-shadow: 0 10px 40px rgba(2,6,23,0.55), inset 0 8px 24px rgba(255,255,255,0.01);
+  background: radial-gradient(circle at 40% 40%, rgba(255,255,255,0.02), transparent 8%);
+}
+
+/* ensure wheel image always remains circular on all screens */
+.wheel img { border-radius:50%; }
+
+/* center badge removed per request; (kept space for aesthetic) */
+.wheel-center {
+  position:absolute;
+  width:24%;
+  aspect-ratio:1;
+  border-radius:50%;
+  pointer-events:none;
+  display:none; /* intentionally hidden to remove center text */
+}
+
+/* control panel on the right */
+.panel {
+  padding:16px;
+  border-radius:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+  border:1px solid rgba(255,255,255,0.03);
+  min-height:420px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  align-items:stretch;
+}
+.panel .spin-btn {
+  display:block;
+  width:100%;
+  background: linear-gradient(90deg,var(--accent),var(--accent-2));
+  color:#081120;
+  font-weight:800;
+  padding:14px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  font-size:16px;
+  box-shadow: 0 12px 32px rgba(255,183,3,0.14);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.panel .spin-btn:active { transform: translateY(1px); }
+.panel .spin-btn[disabled] { opacity:0.6; cursor:not-allowed; transform:none; }
+
+/* result card */
+.result {
+  padding:12px;
+  border-radius:10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+  color:var(--muted);
+  font-size:15px;
+  display:block;
+}
+
+/* prize list */
+.prize-list {
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+  max-height:220px;
+  overflow:auto;
+  padding:6px;
+}
+.prize-item {
+  background: var(--glass);
+  border-radius:8px;
+  padding:10px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* small helper */
+.center-text{ text-align:center; }
+
+/* claim fullscreen overlay (shows after spin) */
+.claim-fullscreen {
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  display:none; /* toggled via JS */
+  z-index:1400;
+  background: linear-gradient(180deg, rgba(2,6,23,0.7), rgba(2,6,23,0.92));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  align-items:center;
+  justify-content:center;
+  padding:22px;
+}
+
+/* content inside claim overlay */
+.claim-card {
+  width:100%;
+  max-width:720px;
+  border-radius:14px;
+  padding:28px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 24px 60px rgba(2,6,23,0.6);
+  text-align:center;
+  color:var(--text);
+  position:relative;
+}
+
+/* celebratory title and decoration */
+.claim-title {
+  font-size:28px;
+  margin:0 0 8px 0;
+  color:var(--accent);
+  font-weight:800;
+}
+.claim-sub {
+  margin:0 0 18px 0;
+  color:var(--muted);
+  font-size:14px;
+}
+
+/* inputs */
+.claim-card input[type="text"],
+.claim-card input[type="tel"] {
+  width:90%;
+  max-width:360px;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.01);
+  color:var(--text);
+  margin:8px 0;
+  font-size:15px;
+}
+
+/* whatsapp share button design */
+.wa-btn {
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 18px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  background:var(--success);
+  color:#052;
+  font-weight:800;
+  font-size:16px;
+}
+.wa-btn img { width:22px; height:22px; }
+
+/* unlock hint */
+.unlock-hint {
+  margin-top:12px;
+  font-size:14px;
+  color:var(--muted);
+}
+
+/* confetti container (canvas is fullscreen when in use) */
+.confetti-canvas {
+  position:fixed;
+  top:0; left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:1350;
+}
+
+/* sparkles canvas (tsparticles) has been assigned id #tsparticles in markup */
+#tsparticles { position: fixed; inset: 0; z-index: 900; pointer-events: none; }
+
+/* RIGHT-SIDE RECENT WINNERS FEED (floating near scrollbar) */
+.recent-feed {
+  position: fixed;
+  right: 12px;
+  top: calc(var(--nav-height) + 12px);
+  width: 220px;
+  max-width: 26vw;
+  z-index: 1300;
+  display: flex;
+  flex-direction: column;
+  gap:10px;
+  align-items: flex-end;
+  pointer-events: auto;
+}
+.recent-item {
+  display:flex;
+  gap:10px;
+  align-items:center;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.03);
+  box-shadow: 0 8px 24px rgba(2,6,23,0.5);
+  width: 100%;
+  transform-origin: right center;
+  opacity:0;
+  transform: translateX(32px);
+  animation: slideInItem 600ms ease forwards;
+}
+.recent-item .avatar {
+  width:40px; height:40px; border-radius:10px;
+  display:grid; place-items:center; font-weight:700;
+  background:linear-gradient(135deg,#ffd56b,#ff7b7b); color:#081120;
+  flex: 0 0 40px;
+}
+.recent-item .meta {
+  flex:1;
+  text-align:left;
+  color:var(--muted);
+  font-size:13px;
+  overflow:hidden;
+}
+.recent-item strong { color:var(--text); font-size:13px; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+@keyframes slideInItem {
+  from { opacity:0; transform: translateX(32px); }
+  to { opacity:1; transform: translateX(0); }
+}
+
+/* BOTTOM TICKER */
+.bottom-ticker {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 12px;
+  z-index: 1300;
+  width: calc(100% - 40px);
+  max-width: var(--max-content-width);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.ticker-wrap {
+  background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border-radius:10px;
+  padding:8px 14px;
+  border:1px solid rgba(255,255,255,0.03);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  max-width:100%;
+  width:100%;
+  overflow:hidden;
+}
+.ticker {
+  white-space:nowrap;
+  display:inline-block;
+  padding-left:16px;
+  animation: tickerMove 18s linear infinite;
+  color:var(--muted);
+  font-size:14px;
+}
+@keyframes tickerMove {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); } /* repeat the content */
+}
+
+/* decorative Diwali greetings block at page bottom for extra lines */
+.footer-greeting {
+  margin-top:30px;
+  padding:18px;
+  border-radius:12px;
+  text-align:center;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+  border:1px solid rgba(255,255,255,0.02);
+  color:var(--muted);
+}
+
+/* accessibility and focus */
+button:focus, a:focus, input:focus { outline: 3px solid rgba(255,183,3,0.12); outline-offset:2px; }
+
+/* tiny responsive helpers */
+@media (max-width:900px) {
+  .brand h1 { font-size:16px; }
+  .hero .title { font-size:20px; }
+  .recent-feed { right: 8px; top: calc(var(--nav-height) + 8px); width: 180px; } /* keep feed visible on tablet */
+  .ticker { animation-duration: 14s; }
+  .panel { min-height: auto; }
+  .wheel-area { min-height:360px; padding:18px; }
+}
+
+/* ensure recent feed remains visible on small screens — move to bottom-left as stacked bar */
+@media (max-width:560px) {
+  .recent-feed {
+    right: auto;
+    left: 12px;
+    top: auto;
+    bottom: 88px;
+    width: calc(40vw);
+    max-width: 160px;
+    align-items: flex-start;
+  }
+  .board { gap:12px; }
+  .wheel-wrap { width: min(92%, 520px); }
+  .prize-list { grid-template-columns: 1fr; }
+  .ticker { animation-duration: 12s; font-size:13px; }
+}
+
+/* guard against any large fixed elements creating horizontal scroll */
+* { max-width: 100vw; }
+
+/* ---- many extra blank comment lines below to increase file length as requested ---- */
+
+
+/* styling padding lines to expand file size while keeping semantics clear */
+/* ........................................................................... */
+/* ........................................................................... */
+/* ........................................................................... */
+/* ........................................................................... */
+/* ........................................................................... */
+/* ........................................................................... */
+/* ........................................................................... */
+/* ........................................................................... */
+/* ........................................................................... */
+/* ........................................................................... */
+
+/* end of CSS */
+</style>
+</head>
+<body>
+
+<!-- tsparticles container for sparkles in background -->
+<div id="tsparticles" aria-hidden="true"></div>
+
+<!-- confetti canvas (canvas-confetti uses its own canvas but we provide a wrapper) -->
+<div class="confetti-canvas" id="confettiCanvas" aria-hidden="true"></div>
+
+<!-- Navigation bar -->
+<div class="container">
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="brand" aria-hidden="false">
+      <div class="logo" aria-hidden="true"><img src="diwali.gif" alt=""></div>
+      <div>
+        <h1 style="font-size: 30px;color: rgb(255, 217, 0); font-style: italic; font-family: 'Courier New', Courier, monospace;">Happy Diwali</h1>
+        <p style="margin-top: 2px;">Spin & Win Guranteed Prize</p>
+      </div>
+    </div>
+
+    <div class="navlinks" role="menubar" aria-hidden="false">
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" role="region" aria-label="Hero section">
+    <div class="left">
+      <div class="title">Celebrate Diwali — Spin the Wheel & Win!</div>
+      <p class="subtitle">Join the festival of lights — Spin to Try Your Luck.</p>
+    </div>
+    <div class="right center-text" aria-hidden="true">
+      <!-- Decorative diwali lamp -->
+        <defs>
+          <linearGradient id="g1" x1="0" x2="1">
+            <stop offset="0" stop-color="#ffd56b"/>
+            <stop offset="1" stop-color="#ff7b7b"/>
+          </linearGradient>
+        </defs>
+        <g>
+          <rect x="8" y="60" width="240" height="56" rx="12" fill="url(#g1)"></rect>
+          <path d="M40 60 C60 30, 196 30, 216 60" stroke="#fff6" stroke-width="6" fill="none"></path>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Main Board -->
+  <main id="play" class="board" role="main">
+    <!-- Wheel area -->
+   <section class="wheel-area" aria-labelledby="play">
+  <div class="pointer" aria-hidden="true"></div>
+  <div class="wheel-wrap" role="img" aria-label="Prize wheel">
+    <img id="wheelImg" class="wheel" src="spin.png" alt="Spin wheel image (place spin.png in the same folder)">
+    <div class="wheel-center" aria-hidden="true"></div>
+  </div>
+</section>
+
+
+    <!-- Side panel -->
+    <aside class="panel" aria-labelledby="controls">
+      <div id="controls">
+        <button id="spinBtn" class="spin-btn" aria-pressed="false" aria-label="Spin the wheel">SPIN THE WHEEL</button>
+      </div>
+
+      <div class="result" id="result" role="status" aria-live="polite">Prize: —</div>
+
+      <h4 id="winners">Prize List</h4>
+      <div class="prize-list" id="prizeList" aria-live="polite" aria-atomic="true">
+        <!-- JS will populate prize list -->
+      </div>
+
+      <div class="center-text" style="margin-top:auto">
+        <small style="color:var(--muted)">Virtual prizes only — demo for learning.<br>Use the WhatsApp share to simulate claiming.</small>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Full screen claim overlay (hidden until spin ends) -->
+  <div class="claim-fullscreen" id="claimFullscreen" role="dialog" aria-modal="true" aria-labelledby="claimTitle">
+    <div class="claim-card">
+      <h2 id="claimTitle" class="claim-title">🎉 Congratulations!</h2>
+      <p id="claimSub" class="claim-sub">You won — fill the form to claim and share to unlock.</p>
+
+      <input id="claimName" type="text" placeholder="Your name" aria-label="Your name" />
+      <input id="claimMobile" type="tel" placeholder="Mobile number" aria-label="Mobile number" />
+
+      <div style="height:12px"></div>
+
+      <button id="submitClaimBtn" class="wa-btn" aria-label="Submit and share on WhatsApp">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp logo" />
+        Submit & Share
+      </button>
+
+      <div class="unlock-hint">
+        <span id="unlockHint">📢 Share it to <strong>5 Groups</strong> and <strong>15 Friends</strong> to unlock your reward!</span>
+      </div>
+
+      <div style="height:8px"></div>
+      <div class="claim-note" style="color:var(--muted);font-size:13px">
+        After sharing, our server will show a success confirmation. we will verify your claim. our team will review it shortly.
+      </div>
+    </div>
+  </div>
+
+  <!-- Right side recent winners feed (floating near scrollbar) -->
+  <div class="recent-feed" id="recentFeed" aria-live="polite" aria-atomic="false">
+    <!-- JS will add recent item nodes here -->
+  </div>
+
+  <!-- Bottom ticker with rotating messages -->
+  <div class="bottom-ticker" aria-hidden="false">
+    <div class="ticker-wrap">
+      <div class="ticker" id="tickerContent" aria-hidden="false">
+        <!-- duplicated content string to ensure smooth infinite scroll -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Extra decorative footer area -->
+  <section class="footer-greeting" role="contentinfo">
+    <div style="font-size:18px;color:var(--accent);font-weight:700">Bright wishes for a joyous Diwali ✨</div>
+    <div style="margin-top:6px;color:var(--muted)">May this festival of lights bring you peace and prosperity. May this Diwali be filled with joy and happiness.</div>
+  </section>
+</div>
+
+<script>
+/* =========================================================================
+   JavaScript — logic for spinning, confetti, particles, and UI interactions.
+   This script resolves the responsiveness and notification visibility issues,
+   keeps all original functionality (no deletions), and adds defensive checks.
+   It has verbose comments and a few helper utilities included.
+   ========================================================================= */
+
+/* -----------------------
+   Prize Configuration
+   ----------------------- */
+const PRIZES = [
+  "iPhone 14",
+  "Better Luck Next Time",
+  "Amazon Voucher $25",
+  "Apple AirPods Pro",
+  "Smart TV",
+  "Samsung S25 Ultra",
+  "Apple Watch Series 9",
+  "20% Store Discount",
+  "Surprise Gift Box",
+  "Luxury Gift Hamper",
+  "Bluetooth Speaker",
+  "Mystery Reward"
+];
+
+/* derived constants */
+const SECTIONS = PRIZES.length;
+const SEGMENT_ANGLE = 360 / SECTIONS;
+
+/* UI elements */
+const wheel = document.getElementById('wheelImg');
+const spinBtn = document.getElementById('spinBtn');
+const resultEl = document.getElementById('result');
+const prizeListEl = document.getElementById('prizeList');
+const board = document.querySelector('.board');
+const claimFullscreen = document.getElementById('claimFullscreen');
+const claimName = document.getElementById('claimName');
+const claimMobile = document.getElementById('claimMobile');
+const submitClaimBtn = document.getElementById('submitClaimBtn');
+const recentFeed = document.getElementById('recentFeed');
+const tickerContent = document.getElementById('tickerContent');
+const claimTitle = document.getElementById('claimTitle');
+const claimSub = document.getElementById('claimSub');
+const unlockHint = document.getElementById('unlockHint');
+
+/* populate prize list UI */
+(function populatePrizes(){
+  prizeListEl.innerHTML = ''; // ensure clean
+  PRIZES.forEach((p,i)=>{
+    const node = document.createElement('div');
+    node.className = 'prize-item';
+    node.innerHTML = `<strong style="width:28px;color:var(--accent)">#${i+1}</strong><div style="flex:1"><div style="font-weight:700;color:var(--text)">${p}</div><div style="color:var(--muted);font-size:12px">Segment ${i+1}</div></div>`;
+    prizeListEl.appendChild(node);
+  });
+})();
+
+/* fallback wheel image if spin.png missing */
+wheel.addEventListener('error', ()=>{
+  // hosted sample image (12-segment wheel) for demo purposes
+  // This fallback is safe and scaled — prevents huge images overflowing.
+  wheel.src = 'https://i.imgur.com/3e1FqfD.png';
+});
+
+/* -----------------------
+   Spinner state + helpers
+   ----------------------- */
+let spinning = false;
+let currentRotation = 0; // total cumulative degrees rotated (keeps state between spins)
+
+/* compute rotation needed to land on prize index */
+function spinToPrize(prizeIndex) {
+  // add randomized full rotations for drama
+  const full = Math.floor(Math.random() * 3) + 5; // 5..7 full turns
+  const landingAngle = prizeIndex * SEGMENT_ANGLE + SEGMENT_ANGLE / 2;
+  // we rotate clockwise by computed amount such that pointer lands on prize
+  const target = full * 360 + (360 - landingAngle);
+  return target;
+}
+
+/* given final wheel rotation (deg), compute prize index under pointer */
+function getPrizeIndexFromAngle(angle) {
+  // angle expected to be currentRotation % 360 (0..360)
+  const normalized = ((angle % 360) + 360) % 360; // normalize positive
+  // pointer is at top (0deg), wheel rotates clockwise, so mapping:
+  // compute which segment's center is at pointer:
+  // pointerAngle is the angle on wheel that aligns with pointer.
+  const pointerAngle = (360 - normalized + SEGMENT_ANGLE / 2) % 360;
+  let index = Math.floor(pointerAngle / SEGMENT_ANGLE);
+  index = index % SECTIONS;
+  if (index < 0) index += SECTIONS;
+  return index;
+}
+
+/* -----------------------
+   Confetti bursts (8s total)
+   ----------------------- */
+function runConfettiFor(durationMs = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--confetti-duration') || 8000)) {
+  // run multiple bursts across the duration
+  if (!window.confetti) {
+    console.warn('confetti library not loaded');
+    return;
+  }
+  const end = Date.now() + durationMs;
+  (function frame() {
+    confetti({
+      particleCount: 12,
+      spread: 60,
+      startVelocity: 40,
+      ticks: 60,
+      origin: { x: Math.random(), y: Math.random() * 0.4 },
+      scalar: Math.random() * 0.6 + 0.7
+    });
+    confetti({
+      particleCount: 8,
+      spread: 90,
+      startVelocity: 24,
+      ticks: 80,
+      origin: { x: Math.random(), y: 0.1 },
+      scalar: Math.random() * 0.5 + 0.6
+    });
+    if (Date.now() < end) {
+      requestAnimationFrame(frame);
+    }
+  })();
+}
+
+/* -----------------------
+   tsParticles sparkles background
+   ----------------------- */
+async function startSparkles() {
+  if (!window.tsParticles) return;
+  try {
+    await tsParticles.load('tsparticles', {
+      fpsLimit: 60,
+      particles: {
+        number: { value: 30, density: { enable: true, area: 800 } },
+        shape: { type: 'star' },
+        color: { value: ['#FFD700', '#FF6B6B', '#A0E7E5', '#F7A072'] },
+        opacity: { value: 0.85, random: true },
+        size: { value: { min: 1, max: 5 }, animate: { enable: true, speed: 2 } },
+        move: { enable: true, speed: 0.8, direction: 'none', outModes: 'out' }
+      },
+      interactivity: { events: { onHover: { enable: false }, onClick: { enable: false } } },
+      detectRetina: true,
+      background: { color: { value: 'transparent' } }
+    });
+  } catch (err) {
+    console.warn('tsParticles failed to load sparkles', err);
+  }
+}
+startSparkles();
+
+/* -----------------------
+   Spin button handler
+   - fixes added for transitionend reliability across browsers
+   ----------------------- */
+function safeAddEventOnce(target, event, handler) {
+  const wrapped = function(e){
+    try { handler(e); } catch(err){ console.error(err); }
+    target.removeEventListener(event, wrapped);
+  };
+  target.addEventListener(event, wrapped);
+}
+
+spinBtn.addEventListener('click', () => {
+  if (spinning) return;
+  spinning = true;
+  spinBtn.disabled = true;
+  spinBtn.setAttribute('aria-pressed', 'true');
+  resultEl.textContent = 'Spinning... Good luck!';
+
+  // choose a prize index randomly
+  const prizeIndex = Math.floor(Math.random() * SECTIONS);
+  const target = spinToPrize(prizeIndex);
+
+  // prepare transition (some browsers need reflow to pick up transition)
+  wheel.style.transition = 'transform 5.8s cubic-bezier(.08,.8,.2,1)';
+  // compute new rotation
+  currentRotation = (currentRotation % 360) + target;
+  // apply transform
+  wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+  // transition end to calculate result
+  const onEnd = () => {
+    const finalAngle = currentRotation % 360;
+    const landedIndex = getPrizeIndexFromAngle(finalAngle);
+    const prize = PRIZES[landedIndex] || 'Mystery Reward';
+    resultEl.textContent = `You won: ${prize}`;
+
+    // celebration: confetti + sparkles
+    runConfettiFor(8000); // 8 seconds
+
+    // show full-screen claim overlay and hide the board
+    setTimeout(() => {
+      claimTitle.textContent = `🎉 Congratulations! You won: ${prize}`;
+      claimSub.textContent = `Claim your prize — fill your name & mobile and share to unlock.`;
+      // Instead of removing board from DOM (which could cause shifts), visually hide:
+      board.style.opacity = '0.06';
+      board.style.pointerEvents = 'none';
+      claimFullscreen.style.display = 'flex';
+      // announce to recent feed and ticker
+      const winnerName = randomName();
+      addRecentWinner({ name: winnerName, prize });
+      pushTicker(`${winnerName} just won ${prize}`);
+      // after overlay shown, focus first input
+      setTimeout(()=> claimName.focus(), 260);
+    }, 350); // small delay for smoother UX
+
+    spinning = false;
+    spinBtn.disabled = false;
+    spinBtn.setAttribute('aria-pressed', 'false');
+  };
+
+  // add both transitionend and transitioncancel listeners for robustness
+  safeAddEventOnce(wheel, 'transitionend', onEnd);
+  safeAddEventOnce(wheel, 'transitioncancel', onEnd);
+});
+
+/* -----------------------
+   Claim submit (WhatsApp share simulation)
+   ----------------------- */
+submitClaimBtn.addEventListener('click', () => {
+  const name = (claimName.value || '').trim();
+  const mobile = (claimMobile.value || '').trim();
+  if (!name || !mobile) {
+    alert('Please enter your name and mobile number to continue.');
+    return;
+  }
+
+  const prizeText = claimTitle.textContent.replace('🎉 Congratulations! You won: ', '') || 'your prize';
+  const message = encodeURIComponent(`🎆 Happy Diwali! ${name} just won ${prizeText} on the Diwali Spin Wheel!`);
+  // open whatsapp share (works on mobile & web)
+  window.open(`https://wa.me/?text=${message}`, '_blank');
+
+  // show final success (demo)
+  setTimeout(() => {
+    alert('Thank you! Your sharing attempt was noted. Your reward is unlocked — enjoy the Diwali spirit!');
+    // hide overlay and show board again or navigate as desired
+    claimFullscreen.style.display = 'none';
+    board.style.opacity = '';
+    board.style.pointerEvents = '';
+  }, 700);
+});
+
+/* -----------------------
+   Recent winners feed (right side) — sliding items in/out
+   ----------------------- */
+
+/* include the names the user specifically asked for: Aarav and Manish
+   this ensures notifications like "Aarav won" and "Manish won" appear */
+const mockNames = ['Deepika','Rajeev','Asha','Vikram','Sana','Rohan','Nisha','Manish','Kavita','Aarav','Priya','Karan','Suhana'];
+const mockPrizes = PRIZES;
+
+/* utility random name generator */
+function randomName() {
+  return mockNames[Math.floor(Math.random() * mockNames.length)];
+}
+
+/* Add a recent winner item to the right feed */
+function addRecentWinner({ name, prize }) {
+  const id = `recent-${Date.now()}-${Math.floor(Math.random()*1000)}`;
+  const item = document.createElement('div');
+  item.className = 'recent-item';
+  item.id = id;
+  const initials = name.split(' ').map(s => s[0]).join('').slice(0,2).toUpperCase();
+
+  item.innerHTML = `
+    <div class="avatar" aria-hidden="true">${initials}</div>
+    <div class="meta">
+      <strong>${name}</strong>
+      <div style="font-size:12px;color:var(--muted)">${prize}</div>
+    </div>
+  `;
+
+  // insert at top for newest-first
+  recentFeed.prepend(item);
+
+  // keep maximum number of items to prevent growth
+  const children = recentFeed.children;
+  if (children.length > 7) {
+    // remove oldest beyond 7 items
+    try { recentFeed.removeChild(children[children.length - 1]); } catch(e){ }
+  }
+
+  // auto-remove after some time with smooth fade
+  setTimeout(() => {
+    item.style.transition = 'opacity 450ms, transform 450ms';
+    item.style.opacity = '0';
+    item.style.transform = 'translateX(28px)';
+    setTimeout(() => {
+      try { if (item.parentNode) item.parentNode.removeChild(item); } catch(e){ }
+    }, 500);
+  }, 9000 + Math.floor(Math.random() * 6000)); // visible for 9-15s
+}
+
+/* populate with a few starter recent wins */
+(function populateInitialRecent() {
+  const starters = [
+    { name: 'Deepika', prize: 'iPhone 14' },
+    { name: 'Rajeev', prize: 'Samsung S25 Ultra' },
+    { name: 'Meera', prize: 'Amazon Voucher $25' },
+    { name: 'Aarav', prize: 'Apple AirPods Pro' },
+    { name: 'Manish', prize: 'Bluetooth Speaker' }
+  ];
+  starters.forEach((s, i) => setTimeout(()=> addRecentWinner(s), 400 + i * 1200));
+})();
+
+/* -----------------------
+   Bottom ticker — repeated messages
+   ----------------------- */
+const tickerMessages = [
+  'Deepika recently won iPhone 14',
+  'Rajeev recently won Samsung S25 Ultra',
+  'Asha recently won Apple AirPods Pro',
+  'Vikram recently won Smart TV',
+  'Sana recently won Apple Watch Series 9',
+  'Rohan recently won 20% Store Discount',
+  'Aarav recently won Apple AirPods Pro',
+  'Manish recently won Bluetooth Speaker'
+];
+
+// push initial ticker content (duplicate string to loop smoothly)
+function pushTicker(text) {
+  if (!text) return;
+  tickerMessages.unshift(text); // add latest to front
+  // keep length manageable
+  if (tickerMessages.length > 24) tickerMessages.length = 24;
+  renderTicker();
+}
+function renderTicker() {
+  // build long string & duplicate to create continuous scroll
+  const base = tickerMessages.join('  •  ');
+  const doubled = base + '  •  ' + base;
+  tickerContent.textContent = doubled;
+}
+renderTicker();
+
+/* -----------------------
+   Periodically add mock winners to feed & ticker to simulate activity
+   - ensures "Aarav" and "Manish" show up often by including them in the pool
+   ----------------------- */
+setInterval(() => {
+  const name = randomName();
+  const prize = mockPrizes[Math.floor(Math.random() * mockPrizes.length)];
+  addRecentWinner({ name, prize });
+  pushTicker(`${name} recently won ${prize}`);
+}, 9000 + Math.floor(Math.random() * 12000)); // every ~9-21s
+
+/* -----------------------
+   Accessibility
+   ----------------------- */
+spinBtn.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    spinBtn.click();
+  }
+});
+submitClaimBtn.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();
+    submitClaimBtn.click();
+  }
+});
+
+/* -----------------------
+   Extra decorative behaviours and fallback checks
+   ----------------------- */
+
+/* ensure confetti canvas covers viewport - canvas-confetti creates its own internal canvas;
+   we keep our wrapper for semantics only */
+function ensureConfettiCanvas() {
+  const el = document.getElementById('confettiCanvas');
+  if (el) {
+    el.style.width = '100%';
+    el.style.height = '100%';
+  }
+}
+ensureConfettiCanvas();
+
+/* ensure page is scrollable — previously we set overflow-y:auto on body;
+   add small sentinel element for comfortable scrolling on small screens */
+(function addBottomSpacer(){
+  const spacer = document.createElement('div');
+  spacer.style.height = '120px';
+  spacer.style.width = '1px';
+  document.body.appendChild(spacer);
+})();
+
+/* Defensive resize handler: prevent potential layout overflows
+   and keep wheel wrapper square and centered. This also helps on
+   orientation change for mobile devices. */
+function handleResize() {
+  // clamp container padding for very narrow screens
+  const root = document.documentElement;
+  const width = window.innerWidth || document.documentElement.clientWidth;
+  if (width < 420) {
+    root.style.setProperty('--safe-padding', '10px');
+  } else {
+    root.style.setProperty('--safe-padding', '14px');
+  }
+
+  // small fix: ensure ticker animation duration adjusts for smaller screens
+  const ticker = document.querySelector('.ticker');
+  if (ticker) {
+    if (width < 420) ticker.style.animationDuration = '12s';
+    else if (width < 900) ticker.style.animationDuration = '14s';
+    else ticker.style.animationDuration = '';
+  }
+}
+window.addEventListener('resize', handleResize);
+handleResize();
+
+/* -----------------------
+   Extra decorative helpers (non-essential)
+   ----------------------- */
+
+/* create an "auto play" spinner for demo purposes (commented out).
+   If you want to enable automatic spins every X seconds, uncomment and configure.
+*/
+/*
+setInterval(()=> {
+  if (!spinning) spinBtn.click();
+}, 45000); // spins every 45 seconds automatically
+*/
+
+/* ------------------------------------------------------------------------
+   End of main script. The code above intentionally contains robust logic,
+   event handlers, mock data generators, and accessibility features, as well
+   as the notifications and ticker features you requested. It also addresses
+   responsiveness and horizontal scrolling issues.
+   ------------------------------------------------------------------------ */
+
+</script>
+
+<!--
+================================================================================
+This file is intentionally verbose and includes many styles, accessible markup,
+animations, and commented sections to meet the requirement for a rich and
+explicitly long code file with a beautiful Diwali congratulations experience.
+================================================================================
+-->
+<!-- 🔹 Start of Banner Ad -->
+<!-- 🔹 Start of Ad Banner -->
+<div id="ad-banner">
+  <script type="text/javascript">
+    atOptions = {
+      'key' : 'a14e4b608842e9ff1f6aa97db9cedbcd',
+      'format' : 'iframe',
+      'height' : 50,
+      'width' : 320,
+      'params' : {}
+    };
+  </script>
+  <script type="text/javascript" src="//www.highperformanceformat.com/a14e4b608842e9ff1f6aa97db9cedbcd/invoke.js"></script>
+</div>
+
+</body>
+</html>
