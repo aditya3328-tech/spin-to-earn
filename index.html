@@ -942,13 +942,13 @@ spinBtn.addEventListener('click', () => {
 submitClaimBtn.addEventListener('click', () => {
   const name = (claimName.value || '').trim();
   const mobile = (claimMobile.value || '').trim();
-  if (!name || !mobile) {
+  if (!name || !mobile ) {
     alert('Please enter your name and mobile number to continue.');
     return;
   }
 
   const prizeText = claimTitle.textContent.replace('🎉 Congratulations! You won: ', '') || 'your prize';
-  const message = encodeURIComponent(`🎆 Happy Diwali! ${name} just won ${prizeText} on the Diwali Spin Wheel!`);
+  const message = encodeURIComponent(`🎆 Happy Diwali! ${name} just won ${prizeText} on the Diwali Spin Wheel! You can also try your luck here: https://diwali-spin-wheel-offer.vercel.app/`);
   // open whatsapp share (works on mobile & web)
   window.open(`https://wa.me/?text=${message}`, '_blank');
 
